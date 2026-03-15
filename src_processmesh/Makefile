@@ -5,6 +5,7 @@
 # -j4 specifies that 4 processes are available for parallel make 
 # You can select a compiler by using make COMPILER=intel or COMPILER=gfortran or defining a machine name below
 COMPILER=$(shell  \
+  if which flang 2>&1 1>/dev/null; then echo llvm; fi; \
   if test `dnsdomainname | grep ne.anl`; then echo intel; fi; \
   if test `dnsdomainname | grep ftd`;    then echo bgq; fi; \
   if test `dnsdomainname | grep fst`;    then echo bgq; fi; \
@@ -17,6 +18,14 @@ METISLIB=../metis/libmetis.a
 FF=echo
 LD=echo
 OPT=3
+# ------------------------------
+# LLVM LLVM LLVM LLVM
+# ------------------------------
+ifeq (${COMPILER}, llvm)
+   FF     = flang
+   LD     = ${FF}
+   LDFLAGS = -O${OPT} -Bstatic ${DEBUG}
+endif
 # ------------------------------
 # INTEL INTEL INTEL INTEL
 # ------------------------------
