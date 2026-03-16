@@ -9,6 +9,7 @@
 #ifdef WITHOMP
 #include <omp.h>
 #endif
+void CommonBlock();
 // Fortran interface routines
 void import_pmesh() {Import_PMesh();}
 void import_pmesh_() {Import_PMesh();}

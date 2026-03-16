@@ -27,11 +27,11 @@ Zero_Threaded(iSize,VectorToInitialize);
 void zero_threaded_(int *iSize,double *VectorToInitialize) {
 Zero_Threaded(iSize,VectorToInitialize);
 }
-// Main subroutine header
-void Zero_Threaded(int *iSize,double *VectorToInitialize) {
 #ifdef WITHOMP
 #include <omp.h>
 #endif
+// Main subroutine header
+void Zero_Threaded(int *iSize,double *VectorToInitialize) {
 //IMPLICIT NONE
 //PROTEUS_Int,  INTENT(IN)    :: iSize
 //PROTEUS_Real, INTENT(INOUT) :: VectorToInitialize(iSize)

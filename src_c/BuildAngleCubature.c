@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------------------------------------------------
 #include "ApplyA_functions.h"
 #include <stdio.h>
+#include <math.h>
 // Fortran interface routines
 void buildanglecubature(int *NumAngles,double *Omega,double *OmegaOmega,double *AngleWeights) {
 BuildAngleCubature(NumAngles,Omega,OmegaOmega,AngleWeights);

@@ -7,6 +7,7 @@
 //#define Debug_DumpAssembledMatrix
 //#define Local_DumpDebugNZS
 //#define Local_DebugNZS
+#include <stdlib.h>
 #ifdef WITHOMP
 #include <omp.h>
 #endif

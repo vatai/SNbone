@@ -6,6 +6,7 @@
 #include "ApplyA_common.h"
 #include "ApplyA_functions.h"
 #include <stdlib.h>
+#include <time.h>
 #include <stdio.h>
 #ifdef WITHOMP
 #include <omp.h>
