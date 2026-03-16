@@ -12,7 +12,8 @@ COMPILER=$(shell  \
   )
 
 EXTFLAGS=-DUSEMETIS
-METISLIB=../metis/libmetis.a
+METISLIB=../metis/lib/libmetis.a
+GKLIB=../metis/lib/libGKlib.a
 
 # Initialization of null variables
 FF=echo
@@ -93,7 +94,7 @@ CheckAdjacency.o: CheckAdjacency.F90 CommonBlock.o
 	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o CheckAdjacency.o CheckAdjacency.F90
 
 ${TARGET}: ${OBJS} Driver.F90
-	$(LD) ${LDFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o ${TARGET} ${OBJS} Driver.F90 ${METISLIB}
+	$(LD) ${LDFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o ${TARGET} ${OBJS} Driver.F90 ${METISLIB} ${GKLIB}
 
 clean:
 	rm -f ${OBJS} *.mod
