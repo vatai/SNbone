@@ -7,6 +7,7 @@
 # -j4 specifies that 4 processes are available for parallel make 
 # You can select a compiler by using make COMPILER=intel or COMPILER=gfortran or defining a machine name below
 COMPILER=$(shell  \
+  if which clang 2>&1 1>/dev/null; then echo llvm; fi; \
   if test `dnsdomainname | grep ne.anl`; then echo intel; fi; \
   if test `dnsdomainname | grep ftd`;    then echo bgq; fi; \
   if test `dnsdomainname | grep fst`;    then echo bgq; fi; \
@@ -32,6 +33,22 @@ PAPIINC=
 PAPILIB=
 IBMFLAGS=
 IBMLIB=
+# ------------------------------
+# LLVM LLVM LLVM LLVM
+# ------------------------------
+ifeq (${COMPILER}, llvm)
+   FF     = flang
+   CC     = clang
+   LD     = ${CC}
+   LDFLAGS = -O${OPT} -Bstatic ${DEBUG} -lm
+ifeq (${THREAD},yes)
+   LDFLAGS = -O${OPT} -fopenmp -DWITHOMP -Bstatic  ${DEBUG} -lm
+endif
+ifeq (${PAPI},yes)
+   PAPIINC= -I/software/papi-5.1.1/O-intel-12.1/include
+   PAPILIB= /software/papi-5.1.1/O-intel-12.1/lib/libpapi.a  /software/papi-5.1.1/O-intel-12.1/lib/libpfm.a
+endif
+endif
 # ------------------------------
 # INTEL INTEL INTEL INTEL
 # ------------------------------
