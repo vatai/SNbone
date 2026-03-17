@@ -14,6 +14,8 @@ make config prefix="$PREFIX" cc=clang
 make -j install
 popd || exit
 
+ln -s "$PREFIX/lib64" "$PREFIX/lib"
+
 git clone https://github.com/KarypisLab/METIS.git
 pushd METIS || exit
 make config prefix="$PREFIX" cc=clang gklib_path="$PREFIX"
