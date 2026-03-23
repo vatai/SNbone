@@ -117,6 +117,7 @@ endif
 # ------------------------------
 # Add the PAPI preprocessing stuff
 TARGET = SNaCFE.x
+SOURCE = FGMRES_Threaded
 ifeq (${PAPI},yes)
    PAPIFLAGS = -DWITHPAPI ${PAPIINC}
    TARGET = SNaCFE_PAPI.x
@@ -125,7 +126,7 @@ FFLAGS = -c ${LDFLAGS}
 
 OBJS =  CommonBlock.o GenerateXb.o PrintSummary.o Verify.o Zero.o \
         Import_PMesh.o BuildAngleCubature.o AssembleNZmatrix.o StencilNZmatrix.o \
-        SolveWGS.o FGMRES_Threaded.o \
+        SolveWGS.o $(SOURCE).o \
         SolveWGS_PassThrough_AVE1.o \
         SolveWGS_PassThrough_AVE2.o \
         SolveWGS_PassThrough_AVE3.o \
@@ -172,8 +173,8 @@ print_vars:
 #	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o SolveWGS.o SolveWGS.F90
 #Method_FGMRES.o: Method_FGMRES.F90 CommonBlock.o Method_Krylov.o
 #	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o Method_FGMRES.o Method_FGMRES.F90
-#FGMRES_Threaded.o: FGMRES_Threaded.F90 CommonBlock.o Method_Krylov.o
-#	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o FGMRES_Threaded.o FGMRES_Threaded.F90
+#$(SOURCE).o: $(SOURCE).F90 CommonBlock.o Method_Krylov.o
+#	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o $(SOURCE).o $(SOURCE).F90
 
 #SolveWGS_PassThrough_AVE1.o: SolveWGS_PassThrough_AVE1.F90 CommonBlock.o
 #	${FF} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o SolveWGS_PassThrough_AVE1.o SolveWGS_PassThrough_AVE1.F90
@@ -201,8 +202,8 @@ AssembleNZmatrix.o: AssembleNZmatrix.c CommonBlock.o
 
 SolveWGS.o: SolveWGS.c CommonBlock.o
 	${CC} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o SolveWGS.o SolveWGS.c
-FGMRES_Threaded.o: FGMRES_Threaded.c CommonBlock.o 
-	${CC} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o FGMRES_Threaded.o FGMRES_Threaded.c
+$(SOURCE).o: $(SOURCE).c CommonBlock.o 
+	${CC} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o $(SOURCE).o $(SOURCE).c
 Import_PMesh.o: Import_PMesh.c CommonBlock.o
 	${CC} ${FFLAGS} ${PAPIFLAGS} ${EXTFLAGS} ${IBMFLAGS} -o Import_PMesh.o Import_PMesh.c
 
