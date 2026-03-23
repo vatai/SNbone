@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from pathlib import Path
 from subprocess import CompletedProcess
 
 from tadashi.apps import App
@@ -9,13 +10,15 @@ from tadashi.translators import Polly, Translator
 class SNbone(App):
     def __init__(
         self,
-        translator,
+        run_args=["1", "100", "30", "32", "1"],
+        source=Path(__file__).parent / "./FGMRES_Threaded.c",
+        translator: Translator = None,
         compiler_options: list[str] = [],
         ephemeral: bool = False,
         populate_scops: bool = True,
     ):
-        self.source = "./FGMRES_Threaded.c"
-        self.run_args = ["1", "100", "30", "32", "1"]
+        self.source = source
+        self.run_args = (run_args,)
         super().__init__(
             source=self.source,
             translator=translator,
@@ -24,11 +27,11 @@ class SNbone(App):
             populate_scops=populate_scops,
         )
 
-    def run_cmd(self):
-        return ["./SNaCFE.x", *self.run_args]
-
     def codegen_init_args(self):
         return {"run_args": self.run_args}
+
+    def run_cmd(self):
+        return ["./SNaCFE.x", *self.run_args]
 
     def extract_runtime(self, proc: CompletedProcess):
         lines = list(proc.stdout.decode().split("\n"))
