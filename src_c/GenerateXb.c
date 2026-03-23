@@ -5,6 +5,10 @@
 #include "ApplyA_common.h"
 #include "ApplyA_functions.h"
 //#define Local_Debug
+#ifdef WITHOMP
+#include <omp.h>
+#endif
+
 
 // Fortran interface routines
 void generatexb(int *Input_Scheme,double *LHS_C, double *LHS_Answer, double *RHS_C) {
@@ -16,10 +20,6 @@ GenerateXb(Input_Scheme,LHS_C,LHS_Answer,RHS_C);
 
 void GenerateXb(int *Input_Scheme,double *LHS_C, double *LHS_Answer, double *RHS_C) {
 // LHS_C(NumAngles,NumVertices),LHS_Answer(NumAngles,NumVertices),RHS_C(NumAngles,NumVertices)
-#ifdef WITHOMP
-#include <omp.h>
-#endif
-
 // Local
 int I,J,K,MyThreadID;
 
