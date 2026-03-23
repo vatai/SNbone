@@ -82,7 +82,7 @@ def main():
     node.transform(tr, *tile_size)
     print(f"{app.legal=}")
     app.compile()
-    tapp = app.generate_code()
+    tapp = app.generate_code(ephemeral=False)
     tapp.compile()
     print(f"{tapp.measure()=}")
 
