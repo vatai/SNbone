@@ -56,7 +56,6 @@ class SNbone(App):
         dummy_o_file.touch()
         return [
             "make",
-            "-B",
             "-j",
             f"TARGET={self.output_binary.name}",
             f"SOURCE={self.source.with_suffix('').name}",
