@@ -47,9 +47,25 @@ class SNbone(App):
 
 def main():
     app = SNbone(translator=Polly())
-    print(app.scops[0].schedule_tree[0].yaml_str)
+    node = app.scops[0].schedule_tree[2]
+    print(node.yaml_str)
+    print(node.available_transformations)
+    tr = node.available_transformations[0]
+    print(tr)
+    node.transform(tr)
+    print(f"{app.legal=}")
+    node = app.scops[0].schedule_tree[6]
+    print(node.available_transformations)
+    print(node.yaml_str)
+    tr = node.available_transformations[1]
+    print(tr)
+    tile_size = 32, 32
+    node.transform(tr, *tile_size)
+    print(f"{app.legal=}")
     app.compile()
-    print(f"{app.measure()=}")
+    tapp = app.generate_code()
+
+    # print(f"{app.measure()=}")
 
 
 if __name__ == "__main__":
