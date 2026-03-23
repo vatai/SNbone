@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import logging
 from pathlib import Path
 from subprocess import CompletedProcess
 
@@ -17,8 +18,10 @@ class SNbone(App):
         ephemeral: bool = False,
         populate_scops: bool = True,
     ):
+
+        self.logger = logging.getLogger(__name__)
         self.source = source
-        self.run_args = (run_args,)
+        self.run_args = run_args
         super().__init__(
             source=self.source,
             translator=translator,
@@ -31,7 +34,7 @@ class SNbone(App):
         return {"run_args": self.run_args}
 
     def run_cmd(self):
-        return ["./SNaCFE.x", *self.run_args]
+        return [str(self.output_binary), *self.run_args]
 
     def extract_runtime(self, proc: CompletedProcess):
         lines = list(proc.stdout.decode().split("\n"))
@@ -45,11 +48,24 @@ class SNbone(App):
         raise Exception("Something wen't wronge while measuring")
 
     def compile_cmd(self, suffix: str):
-        return ["make", "-B", "-j"]
+        dummy_c_file = self.source.with_suffix(".c")
+        dummy_o_file = self.source.with_suffix(".o")
+        self.logger.debug(f"Touching {dummy_c_file}")
+        self.logger.debug(f"Touching {dummy_o_file}")
+        dummy_c_file.touch()
+        dummy_o_file.touch()
+        return [
+            "make",
+            "-B",
+            "-j",
+            f"TARGET={self.output_binary.name}",
+            f"SOURCE={self.source.with_suffix('').name}",
+        ]
 
 
 def main():
     app = SNbone(translator=Polly())
+    print(f"{app.measure()=}")
     node = app.scops[0].schedule_tree[2]
     print(node.yaml_str)
     print(node.available_transformations)
@@ -67,8 +83,8 @@ def main():
     print(f"{app.legal=}")
     app.compile()
     tapp = app.generate_code()
-
-    # print(f"{app.measure()=}")
+    tapp.compile()
+    print(f"{tapp.measure()=}")
 
 
 if __name__ == "__main__":
