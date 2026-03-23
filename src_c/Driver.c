@@ -64,6 +64,8 @@ printf("[SN-KERNEL] Back V(ectors)  specifies the maximum back vectors to use in
 printf("[SN-KERNEL] Angles          specifies the number of angles assigned to the local process................................\n");
 printf("[SN-KERNEL] T(hreads)       specifies the number of threads to use during the execution.................................\n");
 printf("[SN-KERNEL].............................................................................................................\n");
+fflush(stdout);
+fflush(stderr);
 abort();
 }
 else {
